@@ -56,7 +56,9 @@ export class AuthService {
                 if (match) {
                     const access_token = await this.jwtService.signAsync(payload); // generating access token
                     delete user.password // hiding password before sending response.
-                    return this.commonService.SUCCESS({ data: { user, access_token }, message: "User is authenticated" })
+                    const { _id, name, email, mobile, role } = user;
+                    const userData = { _id, name, email, mobile, role, access_token };
+                    return this.commonService.SUCCESS({ data: userData, message: "User is authenticated" })
                 }
                 return this.commonService.FAILURE_RESPONSE({ message: "Invalid creds" })
             }
